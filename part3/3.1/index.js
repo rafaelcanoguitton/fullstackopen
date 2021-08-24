@@ -33,6 +33,8 @@ app.post("/api/persons", (request, response) => {
     return response.status(400).json({ error: "name missing" });
   } else if (!body.number) {
     return response.status(400).json({ error: "number missing" });
+  } else if(!!phonebook.filter((p)=>p.name===body.name).length){
+      return response.status(400).json({error: "name bust be unique"});
   }
   const person = {
     name: body.name,
@@ -63,7 +65,7 @@ app.get("/info", (request, response) => {
     } people</div><br><div>${Date().toLocaleString("en-us")}</div>`
   );
 });
-const PORT = 3001;
+const PORT = 3002;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
