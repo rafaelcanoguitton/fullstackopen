@@ -68,7 +68,7 @@ app.get("/info", (request, response) => {
     } people</div><br><div>${Date().toLocaleString("en-us")}</div>`
   );
 });
-const PORT = 3001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
