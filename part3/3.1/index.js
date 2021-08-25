@@ -25,7 +25,7 @@ let phonebook = [
     number: "39-23-6423122",
   },
 ];
-app.use(express.json(),morgan(':method :url :status :res[content-length] - :response-time ms :body'),cors());
+app.use(express.json(),morgan(':method :url :status :res[content-length] - :response-time ms :body'),cors(),express.static('build'));
 app.get("/api/persons", (request, response) => {
   response.json(phonebook);
 });
