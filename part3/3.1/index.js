@@ -17,22 +17,20 @@ app.get("/api/persons", (request, response) => {
   Person.find({}).then((people) => response.json(people));
 });
 app.post("/api/persons", (request, response) => {
-  const maxId = Math.floor(Math.random() * 1000000);
   const body = request.body;
   if (!body.name) {
     return response.status(400).json({ error: "name missing" });
   } else if (!body.number) {
     return response.status(400).json({ error: "number missing" });
-  } else if (!!phonebook.filter((p) => p.name === body.name).length) {
-    return response.status(400).json({ error: "name bust be unique" });
   }
-  const person = {
-    name: body.name,
-    number: body.number,
-    id: maxId,
-  };
-  phonebook = phonebook.concat(person);
-  response.json(person);
+  const person = new Person({
+    name:body.name,
+    number:body.number,
+  });
+  person.save().then(result=>{
+    console.log(result);
+    response.json(result);
+  });
 });
 app.get("/api/persons/:id", (request, response) => {
   const id = request.params.id;
@@ -50,7 +48,7 @@ app.get("/info", (request, response) => {
     } people</div><br><div>${Date().toLocaleString("en-us")}</div>`
   );
 });
-const PORT = process.env.PORT;
+const PORT = process.env.PORT||3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
