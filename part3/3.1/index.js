@@ -1,5 +1,6 @@
 const express = require("express");
 const morgan=require("morgan");
+const cors = require('cors')
 morgan.token('body', function (req, res) { return JSON.stringify(req.body) });
 const app = express();
 let phonebook = [
@@ -24,7 +25,7 @@ let phonebook = [
     number: "39-23-6423122",
   },
 ];
-app.use(express.json(),morgan(':method :url :status :res[content-length] - :response-time ms :body'));
+app.use(express.json(),morgan(':method :url :status :res[content-length] - :response-time ms :body'),cors());
 app.get("/api/persons", (request, response) => {
   response.json(phonebook);
 });
