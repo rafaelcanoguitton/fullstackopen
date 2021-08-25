@@ -2,7 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const Person = require("./mongo");
-morgan.token("body", function (req, res) {
+morgan.token("body", function (req) {
   return JSON.stringify(req.body);
 });
 const app = express();
@@ -13,7 +13,7 @@ const errorHandler = (error, request, response, next) => {
   } else if (error.name === "ValidationError") {
     return response.status(400).json({ error: error.message });
   }
-  errorhandler(error,request,response);
+  next(error);
 };
 //app use
 app.use(express.json());
@@ -56,7 +56,7 @@ app.get("/api/persons/:id",errorHandler, (request, response) => {
 app.delete("/api/persons/:id", errorHandler,(request, response) => {
   const id = request.params.id;
   Person.findByIdAndRemove(id)
-    .then((res) => {
+    .then(() => {
       response.status(204).end();
     })
     .catch((error) => errorHandler(error,request,response));
@@ -64,7 +64,7 @@ app.delete("/api/persons/:id", errorHandler,(request, response) => {
 app.get("/info", (request, response) => {
   response.send(
     `<div>Phonebook has info for ${
-      phonebook.length
+      Person.count()
     } people</div><br><div>${Date().toLocaleString("en-us")}</div>`
   );
 });
