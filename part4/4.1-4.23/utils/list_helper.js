@@ -24,8 +24,35 @@ const favoriteBlog = (blogs) => {
   }
   return blogs[maxIndex];
 };
+const mostBlogs=(blogs)=>{
+  if(blogs.length===0){
+    return -1;
+  }
+  let hMap=new Map();
+  blogs.forEach(blog => {
+    if(hMap.has(blog.author)){
+      let tempValue=hMap.get(blog.author);
+      hMap.set(blog.author,tempValue+=1);
+    } else {
+      hMap.set(blog.author,1);
+    }
+  });
+  let mAuthor;
+  let mBlogs=0;
+  for(let [key,value] of hMap){
+    if(mBlogs<value){
+      mAuthor=key;
+      mBlogs=value;
+    }
+  }
+  return {
+    author:mAuthor,
+    blogs:mBlogs
+  };
+}
 module.exports = {
   dummy,
   totalLikes,
-  favoriteBlog
+  favoriteBlog,
+  mostBlogs
 };
