@@ -6,6 +6,7 @@ const config = require("./utils/config");
 const mongoose = require("mongoose");
 const mongoUrl = config.MONGODB_URI;
 const blogRouter = require("./controllers/blogs");
+const userRouter=require("./controllers/users");
 mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -16,4 +17,5 @@ mongoose.connect(mongoUrl, {
 app.use(cors());
 app.use(express.json());
 app.use("/api/blogs", blogRouter);
+app.use("/api/users",userRouter);
 module.exports = app;

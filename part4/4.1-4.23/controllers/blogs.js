@@ -1,5 +1,4 @@
 const blogRouter = require("express").Router();
-const { result } = require("lodash");
 const Blog = require("../models/blog");
 require("express-async-errors");
 blogRouter.get("/", async (request, response) => {
