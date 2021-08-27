@@ -44,6 +44,15 @@ describe("blog api", () => {
     expect(contents).toHaveLength(helper.initialBlogs.length + 1);
     expect(contents).toContainEqual(expectedReturn);
   });
+  test("if likes property missing from request, defaults to zero",async()=>{
+    const newBlog = {
+      title: "Drink soda",
+      author: "mike",
+      url: "some_url",
+    };
+    const response= await api.post("/api/blogs").send(newBlog);
+    expect(response.body.likes).toBe(0);
+  });
 });
 afterAll(() => {
   mongoose.connection.close();
