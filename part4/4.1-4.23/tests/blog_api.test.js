@@ -13,6 +13,10 @@ describe("blog api", () => {
     const result = await api.get("/api/blogs");
     expect(result.body).toHaveLength(helper.initialBlogs.length);
   });
+  test("correct id property",async()=>{
+    const result= await api.get("/api/blogs");
+    expect(result.body[0].id).toBeDefined();
+  });
 });
 afterAll(() => {
   mongoose.connection.close();
