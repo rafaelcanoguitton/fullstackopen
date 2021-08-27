@@ -7,15 +7,16 @@ const mongoose = require("mongoose");
 const mongoUrl = config.MONGODB_URI;
 const blogRouter = require("./controllers/blogs");
 const userRouter=require("./controllers/users");
+const middleware=require("./utils/middleware");
 mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
   useCreateIndex: true,
 });
-
 app.use(cors());
 app.use(express.json());
 app.use("/api/blogs", blogRouter);
 app.use("/api/users",userRouter);
+app.use(middleware.errorHandler);
 module.exports = app;
