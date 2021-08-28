@@ -1,10 +1,11 @@
 const userRouter = require("express").Router();
 const User = require("../models/user");
+const Blog=require("../models/blog");
 const bcrypt = require("bcrypt");
 require("express-async-errors");
 const uniqueValidator=require('mongoose-unique-validator');
 userRouter.get("/", async (request, response) => {
-  const users = await User.find({});
+  const users = await User.find({}).populate("blogs");
   response.json(users);
 });
 userRouter.post("/", async (request, response) => {
@@ -23,8 +24,4 @@ userRouter.post("/", async (request, response) => {
   const result= await user.save();
   response.json(result);
 });
-userRouter.get("/",async(request,response)=>{
-    const users=await User.find({});
-    response.json(users);
-})
 module.exports=userRouter;
