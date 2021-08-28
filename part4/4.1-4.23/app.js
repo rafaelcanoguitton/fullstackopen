@@ -8,7 +8,7 @@ const mongoUrl = config.MONGODB_URI;
 const blogRouter = require("./controllers/blogs");
 const userRouter=require("./controllers/users");
 const loginRouter=require("./controllers/login");
-const middleware=require("./utils/middleware");
+const {getTokenFrom,userExtractor,errorHandler}=require("./utils/middleware");
 mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -17,9 +17,9 @@ mongoose.connect(mongoUrl, {
 });
 app.use(cors());
 app.use(express.json());
-app.use(middleware.getTokenFrom);
-app.use("/api/blogs", blogRouter);
+app.use(getTokenFrom);
+app.use("/api/blogs", blogRouter,userExtractor);
 app.use("/api/users",userRouter);
 app.use("/api/login",loginRouter);
-app.use(middleware.errorHandler);
+app.use(errorHandler);
 module.exports = app;

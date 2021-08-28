@@ -17,7 +17,7 @@ blogRouter.post("/", async (request, response) => {
     return response.status(401).json({error:'token missing or invalid'});
   }
   const blogToSave=request.body;
-  const fromUser=await User.findById(decodedToken.id);
+  const fromUser=request.user;
   blogToSave.user=fromUser._id;
   const blog = new Blog(blogToSave);
   const result = await blog.save();
