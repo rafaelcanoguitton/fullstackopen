@@ -1,5 +1,7 @@
 const Blog = require("../models/blog");
-
+const User = require("../models/user");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const initialBlogs = [
   {
     _id: "5a422a851b54a676234d17f7",
@@ -50,6 +52,25 @@ const initialBlogs = [
     __v: 0,
   },
 ];
-module.exports={
-    initialBlogs
-}
+//Log in user or create a user to get a valid token
+const getValidToken = async () => {
+  const userToLog = {
+    username: "rafael",
+    password: "cano",
+  };
+  const exists = await User.findOne({username:userToLog.username});
+  if (exists) {
+    return jwt.sign({ username: userToLog.username, id: exists._id },process.env.SECRET);
+  }
+  const hashedPswd = await bcrypt.hash(userToLog.password, 10);
+  const newUser = new User({
+    username: userToLog.username,
+    passwordHash: hashedPswd,
+  });
+  await newUser.save();
+  return jwt.sign({ username: userToLog.username, id: newUser._id },process.env.SECRET);
+};
+module.exports = {
+  initialBlogs,
+  getValidToken
+};

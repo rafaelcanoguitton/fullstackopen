@@ -29,8 +29,10 @@ describe("blog api", () => {
       title: newBlog.title,
       author: newBlog.author,
     };
+    const token = await helper.getValidToken();
     await api
       .post("/api/blogs")
+      .auth(token, { type: "bearer" })
       .send(newBlog)
       .expect(201)
       .expect("Content-Type", /application\/json/);
@@ -50,21 +52,28 @@ describe("blog api", () => {
       author: "mike",
       url: "some_url",
     };
-    const response = await api.post("/api/blogs").send(newBlog);
+    const token = await helper.getValidToken();
+    const response = await api
+      .post("/api/blogs")
+      .auth(token, { type: "bearer" })
+      .send(newBlog);
     expect(response.body.likes).toBe(0);
   });
   test("if title and/or url are missing then the request has 400 Bad Request status code", async () => {
-    const newBlog={ //no url
-      title:"no url",
-      author:"someone"
-    }
-    const secondBlog={ //no title
-      author:"someone",
-      url:"no title"
-    }
-    const thirBlog={ //neither author nor url
-      author:"oh no"
-    }
+    const newBlog = {
+      //no url
+      title: "no url",
+      author: "someone",
+    };
+    const secondBlog = {
+      //no title
+      author: "someone",
+      url: "no title",
+    };
+    const thirBlog = {
+      //neither author nor url
+      author: "oh no",
+    };
     await api.post("/api/blogs").send(newBlog).expect(400);
     await api.post("/api/blogs").send(secondBlog).expect(400);
     await api.post("/api/blogs").send(thirBlog).expect(400);

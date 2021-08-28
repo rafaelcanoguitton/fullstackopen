@@ -19,7 +19,7 @@ const getTokenFrom = (request, response, next) => {
 };
 const userExtractor = async (request, response, next) => {
   if (request.token) {
-    const id = jwt.verify(request.token, process.env.SECRET).id;
+    const id = await jwt.verify(request.token, process.env.SECRET).id;
     const user = await User.findById(id);
     request.user = user;
   }else{
