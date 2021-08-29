@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import LoginForm from "./components/LoginForm"
 import BlogForm from "./components/blogForm"
+import Notification from "./components/Notification";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 const App = () => {
@@ -13,6 +14,8 @@ const App = () => {
   const [title,setTitle]=useState("");
   const [author,setAuthor]=useState("");
   const [url,setUrl]=useState("");
+  const [notification, setNotification]=useState("");
+  const [style,setStyle]=useState("");
   const handleLogout=async(event)=>{
     setUsername("");
     setPassword("");
@@ -30,8 +33,13 @@ const App = () => {
       setUsername(user.username);
       setPassword("");
       window.localStorage.setItem('blogToken',JSON.stringify(user))
+      setStyle('success');
+      setMessage('Logged in successfully');
+      setTimeout(() => {  setMessage(""); }, 4000);
     } catch (exepction) {
-      //  
+      setStyle('error');
+      setMessage('Wrong username or password');
+      setTimeout(() => {  setMessage(""); }, 4000);
     }
   };
   const handleCreate=async(event)=>{
@@ -45,8 +53,13 @@ const App = () => {
       console.log(user.token);
       const newBlog= await blogService.postBlog(blogToPost,user.token);
       setBlogs(blogs.concat(newBlog));
+      setStyle('success');
+      setMessage(`A new blog ${newBlog.title} by ${newBlog.author} added`);
+      setTimeout(() => {  setMessage(""); }, 4000);
     } catch (exception){
-      //
+      setStyle('error');
+      setMessage(`The blog couldn't be added`);
+      setTimeout(() => {  setMessage(""); }, 4000);
     }
   };
   useEffect(() => {
@@ -61,6 +74,11 @@ const App = () => {
   },[]);
   if (user === null) {
     return (
+      <>
+      <Notification 
+      message={message}
+      style={style}
+      />
       <LoginForm 
       username={username}
       password={password}
@@ -68,11 +86,15 @@ const App = () => {
       setUsername={setUsername}
       handleLogin={handleLogin}
       />
+      </>
     );
   }
   return (
     <div>
-      
+      <Notification 
+      message={message}
+      style={style}
+      />
       <h2>blogs</h2>
       <div>{username} logged in <button onClick={handleLogout}>logout</button></div>
       <br/>
