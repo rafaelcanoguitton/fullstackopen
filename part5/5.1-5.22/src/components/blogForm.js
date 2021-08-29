@@ -1,7 +1,6 @@
 import React from 'react';
 const BlogForm=({title,author,url,setUrl,setTitle,setAuthor,handleCreate})=>{
     return <div>
-    <h2>Log in to application</h2>
     <form onSubmit={handleCreate}>
       <div>
         title:{" "}
