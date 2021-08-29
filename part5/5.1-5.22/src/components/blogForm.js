@@ -1,5 +1,29 @@
-import React from 'react';
-const BlogForm=({title,author,url,setUrl,setTitle,setAuthor,handleCreate})=>{
+import React, {useState} from 'react';
+import blogService from "../services/blogs";
+const BlogForm=({user,blogs,setBlogs,setStyle,setMessage})=>{
+  const [title,setTitle]=useState("");
+  const [author,setAuthor]=useState("");
+  const [url,setUrl]=useState("");
+  const handleCreate=async(event)=>{
+    event.preventDefault();
+    try{
+      const blogToPost={
+        title:title,
+        author:author,
+        url:url
+      }
+      console.log(user.token);
+      const newBlog= await blogService.postBlog(blogToPost,user.token);
+      setBlogs(blogs.concat(newBlog));
+      setStyle('success');
+      setMessage(`A new blog ${newBlog.title} by ${newBlog.author} added`);
+      setTimeout(() => {  setMessage(""); }, 4000);
+    } catch (exception){
+      setStyle('error');
+      setMessage(`The blog couldn't be added`);
+      setTimeout(() => {  setMessage(""); }, 4000);
+    }
+  };
     return <div>
     <form onSubmit={handleCreate}>
       <div>

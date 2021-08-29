@@ -12,10 +12,6 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message,setMessage]=useState("");
-  const [title,setTitle]=useState("");
-  const [author,setAuthor]=useState("");
-  const [url,setUrl]=useState("");
-  const [notification, setNotification]=useState("");
   const [style,setStyle]=useState("");
   const handleLogout=async(event)=>{
     setUsername("");
@@ -40,26 +36,6 @@ const App = () => {
     } catch (exepction) {
       setStyle('error');
       setMessage('Wrong username or password');
-      setTimeout(() => {  setMessage(""); }, 4000);
-    }
-  };
-  const handleCreate=async(event)=>{
-    event.preventDefault();
-    try{
-      const blogToPost={
-        title:title,
-        author:author,
-        url:url
-      }
-      console.log(user.token);
-      const newBlog= await blogService.postBlog(blogToPost,user.token);
-      setBlogs(blogs.concat(newBlog));
-      setStyle('success');
-      setMessage(`A new blog ${newBlog.title} by ${newBlog.author} added`);
-      setTimeout(() => {  setMessage(""); }, 4000);
-    } catch (exception){
-      setStyle('error');
-      setMessage(`The blog couldn't be added`);
       setTimeout(() => {  setMessage(""); }, 4000);
     }
   };
@@ -90,6 +66,7 @@ const App = () => {
       </>
     );
   }
+  console.log(user);
   return (
     <div>
       <Notification 
@@ -100,14 +77,12 @@ const App = () => {
       <div>{username} logged in <button onClick={handleLogout}>logout</button></div>
       <br/>
       <Togglable buttonLabel={"New blog"}>
-        <BlogForm 
-          title={title}
-          author={author}
-          url={url}
-          setTitle={setTitle}
-          setAuthor={setAuthor}
-          setUrl={setUrl}
-          handleCreate={handleCreate}
+        <BlogForm
+          user={user}
+          blogs={blogs}
+          setBlogs={setBlogs}
+          setStyle={setStyle}
+          setMessage={setMessage}
         />
       </Togglable>
       {blogs.map((blog) => (
