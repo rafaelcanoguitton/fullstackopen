@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import blogService from '../services/blogs'
-const Blog = ({ blog, user, deleteBlog,showButton }) => {
+const Blog = ({ blog, user, deleteBlog,showButton,updateBlog }) => {
   const [showInfo, setShow] = useState(false)
   const deleteHandler = async () => {
     console.log(blog)
@@ -31,7 +31,9 @@ const Blog = ({ blog, user, deleteBlog,showButton }) => {
         {blog.likes}{' '}
         <button
           onClick={() => {
-            console.log(blog)
+            const upLikes=blog
+            upLikes.likes=blog.likes+1
+            updateBlog(upLikes)
           }}
         >
           like

@@ -16,7 +16,7 @@ const updateBlog=async(upBlog,token) => {
   const config = {
     headers: { Authorization: `bearer ${token}` },
   }
-  const response=await axios.put(baseUrl,upBlog,config)//Will have to include user id on upBlog
+  const response=await axios.put(baseUrl+'/'+upBlog.id.toString(),upBlog,config)//Will have to include user id on upBlog
   return response.data
 }
 const deleteBlog=async(id,token) => {

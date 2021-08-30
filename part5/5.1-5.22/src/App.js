@@ -60,6 +60,16 @@ const App = () => {
       }, 4000)
     }
   }
+  const updateBlog=async (blog) => {
+    const newBlog=await blogService.updateBlog(blog,user.token)
+    const updatedBlogs=blogs.map((b) => {
+      if(b.id===newBlog.id){
+        return newBlog
+      }
+      return b
+    })
+    setBlogs(updatedBlogs)
+  }
   useEffect(async () => {
     const blogsFromsv = await blogService.getAll()
     blogsFromsv.sort((a, b) => {
@@ -126,6 +136,7 @@ const App = () => {
             user={user}
             deleteBlog={deleteBlog}
             showButton={showButton}
+            updateBlog={updateBlog}
           />
         )
       })}
