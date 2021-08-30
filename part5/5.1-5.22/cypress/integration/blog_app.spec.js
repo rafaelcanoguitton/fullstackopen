@@ -51,7 +51,16 @@ describe('Blog app', function () {
         cy.contains('0')
         cy.contains('like').click()
         cy.contains('1')
-        
+    })
+    it('A blog can be deleted',function(){
+        cy.contains('New blog').click()
+        cy.get('#Title').type('Somepost')
+        cy.get('#Author').type('WithSomeAuthor')
+        cy.get('#Url').type('AndSomeUrl')        
+        cy.contains('create').click()
+        cy.contains('view').click()
+        cy.contains('remove').click()
+        cy.contains('Somepost').should('not.exist')
     })
   })
 })
