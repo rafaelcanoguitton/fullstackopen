@@ -39,8 +39,17 @@ const App = () => {
       setTimeout(() => {  setMessage(""); }, 4000);
     }
   };
-  useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+  useEffect(async () => {
+    const blogsFromsv = await blogService.getAll();
+    blogsFromsv.sort((a,b)=>{
+      if(a.likes<b.likes){
+        return 1;
+      } else if (a.likes>b.likes){
+        return -1;
+      }
+      return 0;
+    });
+    setBlogs(blogsFromsv);
   }, []);
   useEffect(()=>{
     const loggedUserJSON=window.localStorage.getItem('blogToken');
