@@ -21,5 +21,9 @@ app.use(getTokenFrom);
 app.use("/api/blogs", userExtractor,blogRouter);
 app.use("/api/users",userRouter);
 app.use("/api/login",loginRouter);
+if(process.env.NODE_ENV==='development'){
+  const testRouter=require("./controllers/testing");
+  app.use("/api/testing",testRouter);
+}
 app.use(errorHandler);
 module.exports = app;

@@ -4,10 +4,10 @@ import { fireEvent, prettyDOM, render } from '@testing-library/react'
 import Blog from './Blog'
 
 describe('<Blog /> component tests', () => {
-    let component;
-    let upLikes;
+  let component
+  let upLikes
   beforeEach(() => {
-    upLikes=jest.fn();
+    upLikes=jest.fn()
     const testBlog = {
       title: 'Generic title',
       author: 'Some author',
@@ -46,8 +46,8 @@ describe('<Blog /> component tests', () => {
     const button=component.container.querySelector('button')
     fireEvent.click(button)
     const likeButton=component.getByText('like')
-    fireEvent.click(likeButton);
-    fireEvent.click(likeButton);
-    expect(upLikes.mock.calls).toHaveLength(2);
+    fireEvent.click(likeButton)
+    fireEvent.click(likeButton)
+    expect(upLikes.mock.calls).toHaveLength(2)
   })
 })

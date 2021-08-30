@@ -3,7 +3,7 @@ const BlogForm=({ handleCreate }) => {
   const [title,setTitle]=useState('')
   const [author,setAuthor]=useState('')
   const [url,setUrl]=useState('')
-  const callTheFunction=(event)=>{
+  const callTheFunction=(event) => {
     event.preventDefault()
     handleCreate({
       title:title,
