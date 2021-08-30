@@ -32,5 +32,10 @@ describe("<Blog /> component tests", () => {
     expect(button).toHaveTextContent("view"); //Button that only renders
     //when only author and title get rendered
   });
-  
+  test("render likes and url when button gets pressed",()=>{
+    const button = component.container.querySelector("button");
+    fireEvent.click(button);
+    const newButton=component.container.querySelector("button");
+    expect(button).toHaveTextContent("hide");
+  });
 });
