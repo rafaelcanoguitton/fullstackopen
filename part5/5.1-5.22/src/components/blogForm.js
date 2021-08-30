@@ -10,6 +10,9 @@ const BlogForm=({ handleCreate }) => {
       author:author,
       url:url
     })
+    setTitle('')
+    setAuthor('')
+    setUrl('')
   }
   return <div>
     <form onSubmit={callTheFunction}>

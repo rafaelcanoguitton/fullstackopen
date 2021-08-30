@@ -46,6 +46,14 @@ const App = () => {
   const deleteBlog = (delBlog) => {
     try {
       const updatedBlogs = blogs.filter((blog) => blog.id !== delBlog.id)
+      updatedBlogs.sort((a, b) => {
+        if (a.likes < b.likes) {
+          return 1
+        } else if (a.likes > b.likes) {
+          return -1
+        }
+        return 0
+      })
       setBlogs(updatedBlogs)
       setStyle('success')
       setMessage(`Blog ${delBlog.title} has been deleted`)
@@ -67,6 +75,14 @@ const App = () => {
         return newBlog
       }
       return b
+    })
+    updatedBlogs.sort((a, b) => {
+      if (a.likes < b.likes) {
+        return 1
+      } else if (a.likes > b.likes) {
+        return -1
+      }
+      return 0
     })
     setBlogs(updatedBlogs)
   }
