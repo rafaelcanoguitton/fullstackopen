@@ -61,7 +61,7 @@ const Blog = ({ blog, user, deleteBlog,showButton }) => {
     )
   }
 }
-Blog.PropTypes={
+Blog.propTypes={
   blog:PropTypes.object.isRequired,
   user:PropTypes.object.isRequired,
   deleteBlog:PropTypes.func.isRequired,
