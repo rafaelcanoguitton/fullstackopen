@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Blog from "./components/Blog";
-import LoginForm from "./components/LoginForm"
-import BlogForm from "./components/blogForm"
+import LoginForm from "./components/LoginForm";
+import BlogForm from "./components/blogForm";
 import Notification from "./components/Notification";
-import Togglable from "./components/Togglable"
+import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 const App = () => {
@@ -11,14 +11,14 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [message,setMessage]=useState("");
-  const [style,setStyle]=useState("");
-  const handleLogout=async(event)=>{
+  const [message, setMessage] = useState("");
+  const [style, setStyle] = useState("");
+  const handleLogout = async (event) => {
     setUsername("");
     setPassword("");
     setUser(null);
-    window.localStorage.removeItem('blogToken');
-  }
+    window.localStorage.removeItem("blogToken");
+  };
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
@@ -29,62 +29,79 @@ const App = () => {
       setUser(user);
       setUsername(user.username);
       setPassword("");
-      window.localStorage.setItem('blogToken',JSON.stringify(user))
-      setStyle('success');
-      setMessage('Logged in successfully');
-      setTimeout(() => {  setMessage(""); }, 4000);
+      window.localStorage.setItem("blogToken", JSON.stringify(user));
+      setStyle("success");
+      setMessage("Logged in successfully");
+      setTimeout(() => {
+        setMessage("");
+      }, 4000);
     } catch (exepction) {
-      setStyle('error');
-      setMessage('Wrong username or password');
-      setTimeout(() => {  setMessage(""); }, 4000);
+      setStyle("error");
+      setMessage("Wrong username or password");
+      setTimeout(() => {
+        setMessage("");
+      }, 4000);
+    }
+  };
+  const deleteBlog = (delBlog) => {
+    try {
+      const updatedBlogs = blogs.filter((blog) => blog.id != delBlog.id);
+      setBlogs(updatedBlogs);
+      setStyle("success");
+      setMessage(`Blog ${delBlog.title} has been deleted`);
+      setTimeout(() => {
+        setMessage("");
+      }, 4000);
+    } catch (e) {
+      setStyle("error");
+      setMessage("There was an error deleting the blog");
+      setTimeout(() => {
+        setMessage("");
+      }, 4000);
     }
   };
   useEffect(async () => {
     const blogsFromsv = await blogService.getAll();
-    blogsFromsv.sort((a,b)=>{
-      if(a.likes<b.likes){
+    blogsFromsv.sort((a, b) => {
+      if (a.likes < b.likes) {
         return 1;
-      } else if (a.likes>b.likes){
+      } else if (a.likes > b.likes) {
         return -1;
       }
       return 0;
     });
     setBlogs(blogsFromsv);
   }, []);
-  useEffect(()=>{
-    const loggedUserJSON=window.localStorage.getItem('blogToken');
-    if(loggedUserJSON){
-      const user=JSON.parse(loggedUserJSON);
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem("blogToken");
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON);
       setUser(user);
     }
-  },[]);
+  }, []);
   if (user === null) {
     return (
       <>
-      <Notification 
-      message={message}
-      style={style}
-      />
-      <LoginForm 
-      username={username}
-      password={password}
-      setPassword={setPassword}
-      setUsername={setUsername}
-      handleLogin={handleLogin}
-      />
+        <Notification message={message} style={style} />
+        <LoginForm
+          username={username}
+          password={password}
+          setPassword={setPassword}
+          setUsername={setUsername}
+          handleLogin={handleLogin}
+        />
       </>
     );
   }
-  console.log(user);
+
   return (
     <div>
-      <Notification 
-      message={message}
-      style={style}
-      />
+      <Notification message={message} style={style} />
       <h2>blogs</h2>
-      <div>{username} logged in <button onClick={handleLogout}>logout</button></div>
-      <br/>
+      <div>
+        {username} logged in <button onClick={handleLogout}>logout</button>
+      </div>
+      <br />
       <Togglable buttonLabel={"New blog"}>
         <BlogForm
           user={user}
@@ -94,9 +111,24 @@ const App = () => {
           setMessage={setMessage}
         />
       </Togglable>
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
-      ))}
+      {blogs.map((blog) => {
+        let showButton = false;
+        if (blog.user) {
+          console.log(blog.user,user.username);
+          if (blog.user.username === user.username) {
+            showButton = true;
+          }
+        }
+        return (
+          <Blog
+            key={blog.id}
+            blog={blog}
+            user={user}
+            deleteBlog={deleteBlog}
+            showButton={showButton}
+          />
+        );
+      })}
     </div>
   );
 };

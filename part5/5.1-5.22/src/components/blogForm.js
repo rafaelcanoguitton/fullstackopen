@@ -14,6 +14,7 @@ const BlogForm=({user,blogs,setBlogs,setStyle,setMessage})=>{
       }
       console.log(user.token);
       const newBlog= await blogService.postBlog(blogToPost,user.token);
+      newBlog.user=user;
       setBlogs(blogs.concat(newBlog));
       setStyle('success');
       setMessage(`A new blog ${newBlog.title} by ${newBlog.author} added`);

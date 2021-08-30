@@ -10,7 +10,6 @@ const postBlog = async (newBlog, token) => {
     headers: { Authorization: `bearer ${token}` },
   };
   const response = await axios.post(baseUrl, newBlog,config);
-  console.log(response);
   return response.data;
 };
 const updateBlog=async(upBlog,token)=>{
@@ -20,4 +19,11 @@ const updateBlog=async(upBlog,token)=>{
   const response=await axios.put(baseUrl,upBlog,config);//Will have to include user id on upBlog
   return response.data;
 }
-export default { getAll, postBlog };
+const deleteBlog=async(id,token)=>{
+  const config = {
+    headers: { Authorization: `bearer ${token}` },
+  };
+  const response=await axios.delete(baseUrl+'/'+id.toString(),config);
+  return response.data;
+}
+export default { getAll, postBlog, updateBlog, deleteBlog};
