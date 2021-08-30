@@ -5,7 +5,7 @@ const Blog = ({ blog }) => {
     return <div className="blog">
       {blog.title}<button onClick={()=>{setShow(!showInfo)}}>hide</button><br/>
       {blog.url}<br/>
-      {blog.likes} <button>like</button><br/>
+      {blog.likes} <button onClick={()=>{console.log(blog)}}>like</button><br/>
       {blog.author}<br/>
     </div>
   }else{

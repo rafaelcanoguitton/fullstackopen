@@ -13,5 +13,11 @@ const postBlog = async (newBlog, token) => {
   console.log(response);
   return response.data;
 };
-
+const updateBlog=async(upBlog,token)=>{
+  const config = {
+    headers: { Authorization: `bearer ${token}` },
+  };
+  const response=await axios.put(baseUrl,upBlog,config);//Will have to include user id on upBlog
+  return response.data;
+}
 export default { getAll, postBlog };
