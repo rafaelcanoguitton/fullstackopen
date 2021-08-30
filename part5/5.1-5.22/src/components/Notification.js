@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 const Notification = ({ message,style }) => {
-    if(message===""){
-      return <></>
-    }
-      return <div className={style}>{message}</div>;
-  };
-export default Notification;
+  if(message===''){
+    return <></>
+  }
+  return <div className={style}>{message}</div>
+}
+export default Notification

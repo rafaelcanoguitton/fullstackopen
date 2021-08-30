@@ -1,24 +1,26 @@
-import React, { useState,useEffect } from "react";
-import PropTypes from 'prop-types';
-import blogService from "../services/blogs";
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+import blogService from '../services/blogs'
 const Blog = ({ blog, user, deleteBlog,showButton }) => {
-  const [showInfo, setShow] = useState(false);
+  const [showInfo, setShow] = useState(false)
   const deleteHandler = async () => {
-    console.log(blog);
+    console.log(blog)
     if (window.confirm(`Remove blog ${blog.title}?`)) {
       try {
-        await blogService.deleteBlog(blog.id, user.token);
-        deleteBlog(blog);
-      } catch (e) {}
+        await blogService.deleteBlog(blog.id, user.token)
+        deleteBlog(blog)
+      } catch (e) {
+        console.log(e)
+      }
     }
-  };
+  }
   if (showInfo) {
     return (
-      <div className="blog">
+      <div className='blog'>
         {blog.title}
         <button
           onClick={() => {
-            setShow(!showInfo);
+            setShow(!showInfo)
           }}
         >
           hide
@@ -26,10 +28,10 @@ const Blog = ({ blog, user, deleteBlog,showButton }) => {
         <br />
         {blog.url}
         <br />
-        {blog.likes}{" "}
+        {blog.likes}{' '}
         <button
           onClick={() => {
-            console.log(blog);
+            console.log(blog)
           }}
         >
           like
@@ -43,26 +45,26 @@ const Blog = ({ blog, user, deleteBlog,showButton }) => {
           <></>
         )}
       </div>
-    );
+    )
   } else {
     return (
-      <div className="blog">
-        {blog.title} {blog.author}{" "}
+      <div className='blog'>
+        {blog.title} {blog.author}{' '}
         <button
           onClick={() => {
-            setShow(!showInfo);
+            setShow(!showInfo)
           }}
         >
           view
         </button>
       </div>
-    );
+    )
   }
-};
+}
 Blog.PropTypes={
   blog:PropTypes.object.isRequired,
   user:PropTypes.object.isRequired,
   deleteBlog:PropTypes.func.isRequired,
   showButton:PropTypes.bool.isRequired
 }
-export default Blog;
+export default Blog

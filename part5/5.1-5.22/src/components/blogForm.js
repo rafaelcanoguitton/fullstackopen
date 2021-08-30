@@ -1,34 +1,34 @@
-import React, {useState} from 'react';
-import blogService from "../services/blogs";
-const BlogForm=({user,blogs,setBlogs,setStyle,setMessage})=>{
-  const [title,setTitle]=useState("");
-  const [author,setAuthor]=useState("");
-  const [url,setUrl]=useState("");
-  const handleCreate=async(event)=>{
-    event.preventDefault();
+import React, { useState } from 'react'
+import blogService from '../services/blogs'
+const BlogForm=({ user,blogs,setBlogs,setStyle,setMessage }) => {
+  const [title,setTitle]=useState('')
+  const [author,setAuthor]=useState('')
+  const [url,setUrl]=useState('')
+  const handleCreate=async(event) => {
+    event.preventDefault()
     try{
       const blogToPost={
         title:title,
         author:author,
         url:url
       }
-      console.log(user.token);
-      const newBlog= await blogService.postBlog(blogToPost,user.token);
-      newBlog.user=user;
-      setBlogs(blogs.concat(newBlog));
-      setStyle('success');
-      setMessage(`A new blog ${newBlog.title} by ${newBlog.author} added`);
-      setTimeout(() => {  setMessage(""); }, 4000);
+      console.log(user.token)
+      const newBlog= await blogService.postBlog(blogToPost,user.token)
+      newBlog.user=user
+      setBlogs(blogs.concat(newBlog))
+      setStyle('success')
+      setMessage(`A new blog ${newBlog.title} by ${newBlog.author} added`)
+      setTimeout(() => {  setMessage('') }, 4000)
     } catch (exception){
-      setStyle('error');
-      setMessage(`The blog couldn't be added`);
-      setTimeout(() => {  setMessage(""); }, 4000);
+      setStyle('error')
+      setMessage('The blog couldn\'t be added')
+      setTimeout(() => {  setMessage('') }, 4000)
     }
-  };
-    return <div>
+  }
+  return <div>
     <form onSubmit={handleCreate}>
       <div>
-        title:{" "}
+        title:{' '}
         <input
           type="text"
           value={title}
@@ -37,7 +37,7 @@ const BlogForm=({user,blogs,setBlogs,setStyle,setMessage})=>{
         />
       </div>
       <div>
-        author{" "}
+        author{' '}
         <input
           type="text"
           value={author}
@@ -46,7 +46,7 @@ const BlogForm=({user,blogs,setBlogs,setStyle,setMessage})=>{
         />
       </div>
       <div>
-        url{" "}
+        url{' '}
         <input
           type="text"
           value={url}
@@ -57,5 +57,5 @@ const BlogForm=({user,blogs,setBlogs,setStyle,setMessage})=>{
       <button type="submit">create</button>
     </form>
   </div>
-};
-export default BlogForm;
+}
+export default BlogForm
