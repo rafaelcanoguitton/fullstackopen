@@ -89,6 +89,26 @@ const App = () => {
       setUser(user)
     }
   }, [])
+  const handleCreate=async(blog) => {
+    try{
+      const blogToPost={
+        title:blog.title,
+        author:blog.author,
+        url:blog.url
+      }
+      console.log(user.token)
+      const newBlog= await blogService.postBlog(blogToPost,user.token)
+      newBlog.user=user
+      setBlogs(blogs.concat(newBlog))
+      setStyle('success')
+      setMessage(`A new blog ${newBlog.title} by ${newBlog.author} added`)
+      setTimeout(() => {  setMessage('') }, 4000)
+    } catch (exception){
+      setStyle('error')
+      setMessage('The blog couldn\'t be added')
+      setTimeout(() => {  setMessage('') }, 4000)
+    }
+  }
   if (user === null) {
     return (
       <>
@@ -119,6 +139,7 @@ const App = () => {
           setBlogs={setBlogs}
           setStyle={setStyle}
           setMessage={setMessage}
+          handleCreate={handleCreate}
         />
       </Togglable>
       {blogs.map((blog) => {

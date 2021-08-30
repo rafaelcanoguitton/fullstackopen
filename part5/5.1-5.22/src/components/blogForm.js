@@ -1,38 +1,24 @@
 import React, { useState } from 'react'
-import blogService from '../services/blogs'
-const BlogForm=({ user,blogs,setBlogs,setStyle,setMessage }) => {
+const BlogForm=({ handleCreate }) => {
   const [title,setTitle]=useState('')
   const [author,setAuthor]=useState('')
   const [url,setUrl]=useState('')
-  const handleCreate=async(event) => {
+  const callTheFunction=(event)=>{
     event.preventDefault()
-    try{
-      const blogToPost={
-        title:title,
-        author:author,
-        url:url
-      }
-      console.log(user.token)
-      const newBlog= await blogService.postBlog(blogToPost,user.token)
-      newBlog.user=user
-      setBlogs(blogs.concat(newBlog))
-      setStyle('success')
-      setMessage(`A new blog ${newBlog.title} by ${newBlog.author} added`)
-      setTimeout(() => {  setMessage('') }, 4000)
-    } catch (exception){
-      setStyle('error')
-      setMessage('The blog couldn\'t be added')
-      setTimeout(() => {  setMessage('') }, 4000)
-    }
+    handleCreate({
+      title:title,
+      author:author,
+      url:url
+    })
   }
   return <div>
-    <form onSubmit={handleCreate}>
+    <form onSubmit={callTheFunction}>
       <div>
         title:{' '}
         <input
           type="text"
           value={title}
-          name="Title"
+          id="Title"
           onChange={({ target }) => setTitle(target.value)}
         />
       </div>
@@ -41,7 +27,7 @@ const BlogForm=({ user,blogs,setBlogs,setStyle,setMessage }) => {
         <input
           type="text"
           value={author}
-          name="Author"
+          id="Author"
           onChange={({ target }) => setAuthor(target.value)}
         />
       </div>
@@ -50,7 +36,7 @@ const BlogForm=({ user,blogs,setBlogs,setStyle,setMessage }) => {
         <input
           type="text"
           value={url}
-          name="Url"
+          id="Url"
           onChange={({ target }) => setUrl(target.value)}
         />
       </div>
