@@ -26,4 +26,20 @@ describe('Blog app', function () {
         cy.contains('Wrong username or password')
     })
   })
+  describe('When logged in', function() {
+    beforeEach(function() {
+        cy.get('input:first').type('Rafael')
+        cy.get('input:last').type('Fullstack')
+        cy.contains('login').click()
+    })
+
+    it('A blog can be created', function() {
+        cy.contains('New blog').click()
+        cy.get('#Title').type('Somepost')
+        cy.get('#Author').type('WithSomeAuthor')
+        cy.get('#Url').type('AndSomeUrl')
+        cy.contains('create').click()
+        cy.contains('Somepost')
+    })
+  })
 })
