@@ -4,7 +4,7 @@ import { createStore } from 'redux'
 import reducer from './reducer'
 
 const store = createStore(reducer)
-
+//I guess that's 6.2 too.
 const App = () => {
   const good = () => {
     store.dispatch({
@@ -26,7 +26,6 @@ const App = () => {
       type: 'ZERO'
     })
   }
-
   return (
     <div>
       <button onClick={good}>good</button> 
