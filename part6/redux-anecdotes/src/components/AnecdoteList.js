@@ -6,6 +6,9 @@ const AnecdoteList = () => {
   const anecdotes = useSelector((state) => {
     return state.anecdotes;
   });
+  const filter = useSelector((state) => {
+    return state.filter;
+  });
   const dispatch = useDispatch();
   const vote = (id, content) => {
     dispatch(voteAnecdote(id));
@@ -18,6 +21,7 @@ const AnecdoteList = () => {
     <>
       <h2>Anecdotes</h2>
       {anecdotes
+        .filter((a) => a.content.includes(filter))
         .sort((a, b) => {
           if (a.votes > b.votes) return -1;
           else return 1;

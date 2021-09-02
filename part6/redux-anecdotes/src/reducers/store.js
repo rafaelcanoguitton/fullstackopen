@@ -3,10 +3,12 @@
 import { createStore, combineReducers } from "redux";
 import anectodeReducer from "./anecdoteReducer";
 import notificationReducer from "./notificationReducer";
+import filterReducer from "./filterReducer";
 import {composeWithDevTools}from 'redux-devtools-extension'
 const reducer = combineReducers({
   anecdotes: anectodeReducer,
   notification:notificationReducer,
+  filter:filterReducer,
 });
 const store = createStore(reducer,composeWithDevTools());
 
