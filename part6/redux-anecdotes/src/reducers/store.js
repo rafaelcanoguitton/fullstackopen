@@ -2,10 +2,12 @@
 //here we'll combine all reducers
 import { createStore, combineReducers } from "redux";
 import anectodeReducer from "./anecdoteReducer";
-
-const reducer=combineReducers({
-    anecdotes:anectodeReducer,
+import notificationReducer from "./notificationReducer";
+import {composeWithDevTools}from 'redux-devtools-extension'
+const reducer = combineReducers({
+  anecdotes: anectodeReducer,
+  notification:notificationReducer,
 });
-const store=createStore(reducer);
+const store = createStore(reducer,composeWithDevTools());
 
 export default store;
