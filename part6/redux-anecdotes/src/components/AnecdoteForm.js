@@ -5,21 +5,16 @@ import { setNotification } from "../reducers/notificationReducer";
 import anecdoteService from "../services/anecdoteService";
 const AnectodeForm = () => {
   const dispatch = useDispatch();
-  const newAnec = async(event) => {
+  const newAnec = (event) => {
     event.preventDefault();
     const content = event.target.anecdote.value;
     const anecdote = asObject(content);
     try {
-      await anecdoteService.createNew(anecdote);
       dispatch(createAnecdote(anecdote));
-      dispatch(setNotification("¡New anecdote created!"));
+      dispatch(setNotification("¡New anecdote created!",3));
       event.target.anecdote.value = "";
     } catch (e) {
       dispatch(setNotification("there was an error on the server"));
-    } finally {
-      setTimeout(() => {
-        setNotification("");
-      }, 3000);
     }
   };
   return (

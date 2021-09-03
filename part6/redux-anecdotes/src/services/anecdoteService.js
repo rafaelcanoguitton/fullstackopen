@@ -9,7 +9,12 @@ const createNew = async (anecdote) => {
   const response = await axios.post(baseUrl, anecdote);
   return response.data;
 };
+const updateAnecdote=async(anecdote)=>{
+  const response=await axios.put(baseUrl+'/'+anecdote.id,anecdote);
+  return response.data;
+}
 export default {
   getAll,
   createNew,
+  updateAnecdote
 };

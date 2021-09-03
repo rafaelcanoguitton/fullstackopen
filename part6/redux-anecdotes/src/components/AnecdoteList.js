@@ -10,12 +10,9 @@ const AnecdoteList = () => {
     return state.filter;
   });
   const dispatch = useDispatch();
-  const vote = (id, content) => {
-    dispatch(voteAnecdote(id));
-    dispatch(setNotification("You voted " + content));
-    setTimeout(() => {
-      dispatch(setNotification(""));
-    }, 3000);
+  const vote = (anecdote) => {
+    dispatch(voteAnecdote(anecdote));
+    dispatch(setNotification("You voted " + anecdote.content,3));
   };
   console.log(anecdotes);
   return (
@@ -32,7 +29,7 @@ const AnecdoteList = () => {
             <div>{anecdote.content}</div>
             <div>
               has {anecdote.votes}
-              <button onClick={() => vote(anecdote.id, anecdote.content)}>
+              <button onClick={() => vote(anecdote)}>
                 vote
               </button>
             </div>

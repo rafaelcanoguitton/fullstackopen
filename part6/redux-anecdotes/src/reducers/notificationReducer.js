@@ -1,5 +1,10 @@
-export const setNotification = (content) => {
-  return { type: "NEW_NOTIFICATION", data: content };
+export const setNotification = (content,time) => {
+  return dispatch=>{
+    dispatch({type:'NEW_NOTIFICATION',data:content});
+    setTimeout(() => {
+      dispatch(dispatch({type:'NEW_NOTIFICATION',data:""}));
+    }, time*1000);
+  }
 };
 const notificationReducer = (state = "", action) => {
   switch (action.type) {
