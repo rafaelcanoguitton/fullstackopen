@@ -17,6 +17,7 @@ const AnecdoteList = () => {
       dispatch(setNotification(""));
     }, 3000);
   };
+  console.log(anecdotes);
   return (
     <>
       <h2>Anecdotes</h2>
