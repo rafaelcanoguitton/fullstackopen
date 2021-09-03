@@ -1,5 +1,6 @@
 export const setNotification = (content,time) => {
   return dispatch=>{
+    clearTimeout();
     dispatch({type:'NEW_NOTIFICATION',data:content});
     setTimeout(() => {
       dispatch(dispatch({type:'NEW_NOTIFICATION',data:""}));
