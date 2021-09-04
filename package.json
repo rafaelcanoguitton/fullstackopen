@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "axios": "^0.21.1"
-  },
-  "devDependencies": {
-    "json-server": "^0.16.3"
-  }
-}
