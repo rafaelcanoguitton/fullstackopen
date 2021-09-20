@@ -7,7 +7,7 @@ import Togglable from './components/Togglable'
 import { useDispatch, useSelector } from 'react-redux'
 import { initBlogs } from './reducers/BlogReducer'
 import { setU } from './reducers/UserReducer'
-const App = () => {
+const Main = () => {
   const dispatch = useDispatch()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -46,7 +46,7 @@ const App = () => {
       <Notification />
       <h2>blogs</h2>
       <div>
-        {username} logged in <button onClick={handleLogout}>logout</button>
+        <b>{user.username}</b> logged in <button onClick={handleLogout}>logout</button>
       </div>
       <br />
       <Togglable buttonLabel={'New blog'}>
@@ -67,4 +67,4 @@ const App = () => {
   )
 }
 
-export default App
+export default Main
