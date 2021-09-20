@@ -25,7 +25,7 @@ export const voteAnecdote = (anecdote) => {
     return dispatch({type:'VOTE',data:updatedAnecdote})
   }
 };
-export const initiateAnecdotes =(anecdotes)=>{
+export const initiateAnecdotes =()=>{
   return async dispatch=>{
     const anecdotes= await anecdoteService.getAll();
     return dispatch({type:'INIT_ANECDOTES',data:anecdotes})

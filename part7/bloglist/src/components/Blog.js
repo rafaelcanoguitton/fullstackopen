@@ -1,19 +1,31 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import { delBlog, upBlog } from '../reducers/BlogReducer'
 import blogService from '../services/blogs'
-const Blog = ({ blog, user, deleteBlog,showButton,updateBlog }) => {
+import { useSelector,useDispatch } from 'react-redux'
+import { setNotification } from '../reducers/NotificationReducer'
+const Blog = ({ blog,showButton }) => {
   const [showInfo, setShow] = useState(false)
+  const user= useSelector(state => state.user)
+  const dispatch=useDispatch()
   const deleteHandler = async () => {
-    console.log(blog)
     if (window.confirm(`Remove blog ${blog.title}?`)) {
       try {
         await blogService.deleteBlog(blog.id, user.token)
-        deleteBlog(blog)
+        dispatch(delBlog(blog))
+        dispatch(setNotification(`Blog ${blog.title} has been deleted`))
+        setTimeout(() => {
+          dispatch(setNotification(''))
+        }, 4000)
       } catch (e) {
         console.log(e)
+        dispatch(setNotification('There was an error deleting the blog'))
+        setTimeout(() => {
+          dispatch(setNotification(''))
+        }, 4000)
       }
     }
   }
+
   if (showInfo) {
     return (
       <div className='blog'>
@@ -33,7 +45,7 @@ const Blog = ({ blog, user, deleteBlog,showButton,updateBlog }) => {
           onClick={() => {
             const upLikes=blog
             upLikes.likes=blog.likes+1
-            updateBlog(upLikes)
+            dispatch(upBlog(upLikes,user.token))
           }}
         >
           like
@@ -62,11 +74,5 @@ const Blog = ({ blog, user, deleteBlog,showButton,updateBlog }) => {
       </div>
     )
   }
-}
-Blog.propTypes={
-  blog:PropTypes.object.isRequired,
-  user:PropTypes.object.isRequired,
-  deleteBlog:PropTypes.func.isRequired,
-  showButton:PropTypes.bool.isRequired
 }
 export default Blog
