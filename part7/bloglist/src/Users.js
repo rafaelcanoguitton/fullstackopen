@@ -42,7 +42,7 @@ const Users=() => {
             users.map((u) => {
               return (
                 <tr key={u.username}>
-                  <th>{u.username}</th>
+                  <a href={`/users/${u.id}`}><th>{u.username}</th></a>
                   <th>{u.blogs.length}</th>
                 </tr>
               )
