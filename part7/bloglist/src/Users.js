@@ -1,34 +1,56 @@
 import React,{ useState,useEffect } from 'react'
 import userService from './services/users'
+import { useParams } from 'react-router-dom'
 const Users=() => {
   const [users,setUsers]=useState([])
+  const id = useParams().id
   useEffect(async () => {
     const UsersFromSv= await userService.getAll()
     setUsers(UsersFromSv)
   },[])
-  console.log('osers',users)
-  return (
-    <>
-      <h2>
-            Users
-      </h2>
-      <table>
-        <tr>
-          <th></th>
-          <th><b>blogs created</b></th>
-        </tr>
-        {
-          users.map((u) => {
-            return (
-              <tr key={u.username}>
-                <th>{u.username}</th>
-                <th>{u.blogs.length}</th>
-              </tr>
-            )
-          })
-        }
-      </table>
-    </>
-  )
+  if(id){
+    if(users.length!==0){
+      const user=users.find(u =>
+        id===String(u.id)
+      )
+      return (<>
+        <h1>{user.username}</h1>
+        <h2>
+          <b>added blogs</b>
+          <ul>
+            {user.blogs.map(b => {
+              return (<li key={b.id}>{b.title}</li>)
+            })}
+          </ul>
+        </h2>
+      </>)
+    } else{
+      return <></>
+    }
+  }else{
+    return (
+      <>
+        <h2>
+                Users
+        </h2>
+        <table>
+          <tr>
+            <th></th>
+            <th><b>blogs created</b></th>
+          </tr>
+          {
+            users.map((u) => {
+              return (
+                <tr key={u.username}>
+                  <th>{u.username}</th>
+                  <th>{u.blogs.length}</th>
+                </tr>
+              )
+            })
+          }
+        </table>
+      </>
+    )
+  }
 }
 export default Users

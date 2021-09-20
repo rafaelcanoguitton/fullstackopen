@@ -6,6 +6,9 @@ const AppRouter=() => {
   return(
     <Router>
       <Switch>
+        <Route path='/users/:id'>
+          <Users/>
+        </Route>
         <Route path='/users'>
           <Users/>
         </Route>
