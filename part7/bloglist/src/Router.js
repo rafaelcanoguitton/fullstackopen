@@ -3,9 +3,11 @@ import Main from './Main'
 import Users from './Users'
 import { BrowserRouter as Router,Switch,Route } from 'react-router-dom'
 import Blog from './components/SpecBlog'
+import NavBar from './components/NavBar'
 const AppRouter=() => {
   return(
     <Router>
+      <NavBar/>
       <Switch>
         <Route path='/users/:id'>
           <Users/>

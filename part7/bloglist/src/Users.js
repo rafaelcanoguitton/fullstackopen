@@ -1,6 +1,6 @@
 import React,{ useState,useEffect } from 'react'
 import userService from './services/users'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 const Users=() => {
   const [users,setUsers]=useState([])
   const id = useParams().id
@@ -42,7 +42,7 @@ const Users=() => {
             users.map((u) => {
               return (
                 <tr key={u.username}>
-                  <a href={`/users/${u.id}`}><th>{u.username}</th></a>
+                  <Link to={`/users/${u.id}`}><th>{u.username}</th></Link>
                   <th>{u.blogs.length}</th>
                 </tr>
               )

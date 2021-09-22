@@ -3,6 +3,7 @@ import { delBlog, upBlog } from '../reducers/BlogReducer'
 import blogService from '../services/blogs'
 import { useSelector,useDispatch } from 'react-redux'
 import { setNotification } from '../reducers/NotificationReducer'
+import { Link } from 'react-router-dom'
 const Blog = ({ blog,showButton }) => {
   const [showInfo, setShow] = useState(false)
   const user= useSelector(state => state.user)
@@ -29,7 +30,7 @@ const Blog = ({ blog,showButton }) => {
   if (showInfo) {
     return (
       <div className='blog'>
-        {blog.title}
+        <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
         <button
           onClick={() => {
             setShow(!showInfo)
@@ -63,7 +64,7 @@ const Blog = ({ blog,showButton }) => {
   } else {
     return (
       <div className='blog'>
-        <a href={`/blogs/${blog.id}`}>{blog.title}</a> {blog.author}{' '}
+        <Link to={`/blogs/${blog.id}`}>{blog.title}</Link> {blog.author}{' '}
         <button
           onClick={() => {
             setShow(!showInfo)

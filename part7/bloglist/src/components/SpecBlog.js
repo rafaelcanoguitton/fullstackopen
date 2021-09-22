@@ -1,21 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { useParams } from 'react-router-dom'
-import blogService from '../services/blogs'
+import { useSelector } from 'react-redux'
 const Blog=() => {
-  const [blog,setBlog]=useState(null)
   const id = useParams().id
-  useEffect(async () => {
-    const blogsFromSv=await blogService.getAll()
-    const ourBlog=blogsFromSv.find(b => b.id===id)
-    setBlog(ourBlog)
-  }, [])
-  if(blog){
+  const blogs=useSelector(state => state.blogs)
+  const blog=blogs.find(b => b.id===id)
+  if(blogs.length!==0){
     return (
       <>
         <h2>{blog.title}</h2>
         <div className='blog'>
-
-          {blog.url}
+          <a href={blog.url}>{blog.url}</a>
           <br />
           {blog.likes}{' '}
           <br />
