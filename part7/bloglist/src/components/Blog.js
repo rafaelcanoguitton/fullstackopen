@@ -63,7 +63,7 @@ const Blog = ({ blog,showButton }) => {
   } else {
     return (
       <div className='blog'>
-        {blog.title} {blog.author}{' '}
+        <a href={`/blogs/${blog.id}`}>{blog.title}</a> {blog.author}{' '}
         <button
           onClick={() => {
             setShow(!showInfo)
