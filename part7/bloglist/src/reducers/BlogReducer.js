@@ -30,9 +30,9 @@ export const delBlog=(id) => {
     return dispatch({ type: 'DEL_BLOG', data: id })
   }
 }
-export const makeComment=(comment,id) => {
+export const makeComment=(comment,id,token) => {
   return dispatch => {
-    return dispatch({ type: 'COMMENT',data:{ comment:comment,id:id } })
+    return dispatch({ type: 'COMMENT',data:{ comment:comment,id:id,token:token } })
   }
 }
 const blogReducer = (state = [], action) => {
@@ -72,12 +72,13 @@ const blogReducer = (state = [], action) => {
   case 'COMMENT':
     console.log(action.data)
     var upB = state
-      .map((b) => {
+      .map(async (b) => {
         if (b.id === action.data.id) {
           if(!b.comments){
             b.comments=[]
           }
           b.comments.push(action.data.comment)
+          await blogService.updateBlog(b, action.token)
         }
         return b
       })
