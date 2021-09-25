@@ -30,6 +30,11 @@ export const delBlog=(id) => {
     return dispatch({ type: 'DEL_BLOG', data: id })
   }
 }
+export const makeComment=(comment,id) => {
+  return dispatch => {
+    return dispatch({ type: 'COMMENT',data:{ comment:comment,id:id } })
+  }
+}
 const blogReducer = (state = [], action) => {
   switch (action.type) {
   case 'NEW_BLOG':
@@ -64,6 +69,27 @@ const blogReducer = (state = [], action) => {
     return withoutDel
   case 'INIT':
     return action.data
+  case 'COMMENT':
+    console.log(action.data)
+    var upB = state
+      .map((b) => {
+        if (b.id === action.data.id) {
+          if(!b.comments){
+            b.comments=[]
+          }
+          b.comments.push(action.data.comment)
+        }
+        return b
+      })
+      .sort((a, b) => {
+        if (a.likes < b.likes) {
+          return 1
+        } else if (a.likes > b.likes) {
+          return -1
+        }
+        return 0
+      })
+    return upB
   default:
     return state
   }
