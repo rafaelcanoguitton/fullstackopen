@@ -4,6 +4,7 @@ import blogService from '../services/blogs'
 import { useSelector,useDispatch } from 'react-redux'
 import { setNotification } from '../reducers/NotificationReducer'
 import { Link } from 'react-router-dom'
+import { Button } from '@material-ui/core'
 const Blog = ({ blog,showButton }) => {
   const [showInfo, setShow] = useState(false)
   const user= useSelector(state => state.user)
@@ -31,18 +32,18 @@ const Blog = ({ blog,showButton }) => {
     return (
       <div className='blog'>
         <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-        <button
+        <Button variant="contained" color="primary"
           onClick={() => {
             setShow(!showInfo)
           }}
         >
           hide
-        </button>
+        </Button>
         <br />
         {blog.url}
         <br />
         {blog.likes}{' '}
-        <button
+        <Button variant="contained" color="primary"
           onClick={() => {
             const upLikes=blog
             upLikes.likes=blog.likes+1
@@ -50,12 +51,13 @@ const Blog = ({ blog,showButton }) => {
           }}
         >
           like
-        </button>
+        </Button>
         <br />
         {blog.author}
         <br />
         {showButton ? (
-          <button onClick={deleteHandler}>remove</button>
+          <Button variant="contained" color="primary"
+            onClick={deleteHandler}>remove</Button>
         ) : (
           <></>
         )}
@@ -65,13 +67,13 @@ const Blog = ({ blog,showButton }) => {
     return (
       <div className='blog'>
         <Link to={`/blogs/${blog.id}`}>{blog.title}</Link> {blog.author}{' '}
-        <button
+        <Button variant="contained" color="primary"
           onClick={() => {
             setShow(!showInfo)
           }}
         >
           view
-        </button>
+        </Button>
       </div>
     )
   }

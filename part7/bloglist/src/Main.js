@@ -7,6 +7,7 @@ import Togglable from './components/Togglable'
 import { useDispatch, useSelector } from 'react-redux'
 import { initBlogs } from './reducers/BlogReducer'
 import { setU } from './reducers/UserReducer'
+import { Button } from '@material-ui/core'
 const Main = () => {
   const dispatch = useDispatch()
   const [username, setUsername] = useState('')
@@ -46,7 +47,7 @@ const Main = () => {
       <Notification />
       <h2>blogs</h2>
       <div>
-        <b>{user.username}</b> logged in <button onClick={handleLogout}>logout</button>
+        <b>{user.username}</b> logged in <Button variant="contained" color="primary" onClick={handleLogout}>logout</Button>
       </div>
       <br />
       <Togglable buttonLabel={'New blog'}>

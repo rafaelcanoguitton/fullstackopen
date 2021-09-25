@@ -1,6 +1,10 @@
 import React,{ useState,useEffect } from 'react'
 import userService from './services/users'
 import { useParams, Link } from 'react-router-dom'
+import { Table,
+  TableRow,
+  TableHead
+} from '@material-ui/core'
 const Users=() => {
   const [users,setUsers]=useState([])
   const id = useParams().id
@@ -33,22 +37,22 @@ const Users=() => {
         <h2>
                 Users
         </h2>
-        <table>
-          <tr>
-            <th></th>
-            <th><b>blogs created</b></th>
-          </tr>
+        <Table>
+          <TableRow>
+            <TableHead></TableHead>
+            <TableHead><b>blogs created</b></TableHead>
+          </TableRow>
           {
             users.map((u) => {
               return (
-                <tr key={u.username}>
-                  <Link to={`/users/${u.id}`}><th>{u.username}</th></Link>
-                  <th>{u.blogs.length}</th>
-                </tr>
+                <TableRow key={u.username}>
+                  <Link to={`/users/${u.id}`}><TableHead>{u.username}</TableHead></Link>
+                  <TableHead>{u.blogs.length}</TableHead>
+                </TableRow>
               )
             })
           }
-        </table>
+        </Table>
       </>
     )
   }

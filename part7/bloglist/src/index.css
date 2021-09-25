@@ -1,3 +1,13 @@
+.input{
+  padding: 5px;
+}
+body{
+  background-color: #808080;
+}
+button{
+  margin:auto;
+  padding: 5px;
+}
 .error {
     color: red;
     background: lightgrey;
