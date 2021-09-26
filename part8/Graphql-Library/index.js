@@ -1,5 +1,5 @@
 const { ApolloServer, gql } = require("apollo-server");
-
+const { v1: uuid } = require('uuid')
 let authors = [
   {
     name: "Robert Martin",
@@ -101,8 +101,20 @@ const typeDefs = gql`
   type Query {
     authorCount: Int!
     bookCount: Int!
-    allBooks(author:String): [Book]
+    allBooks(author:String,genre:String): [Book]
     allAuthors: [Author!]!
+  }
+  type Mutation{
+      addBook(
+          title:String!
+          author:String!
+          published:Int!,
+          genres:[String!]!
+      ):Book
+      editAuthor(
+          name:String!
+          born:Int!
+      ):Author
   }
 `;
 
@@ -110,22 +122,46 @@ const resolvers = {
   Query: {
     authorCount: () => authors.length,
     bookCount: () => books.length,
-    allBooks: (root,args) => {
-        console.log(root,args)
-        if(args.author){
-            return books.filter(b=>b.author===args.author)
-        }
-        return books
+    allBooks: (root, args) => {
+      if (args.author) {
+        return books.filter((b) => b.author === args.author);
+      }
+      if (args.genre) {
+        return books.filter((b) => b.genres.filter((g) => g === args.genre));
+      }
+      return books;
     },
     allAuthors: () => {
-      return authors.map(author=>{
-          const bookCount=books.filter(book=>book.author===author.name).length
-          return {...author,bookCount}
-      })
+      return authors.map((author) => {
+        const bookCount = books.filter(
+          (book) => book.author === author.name
+        ).length;
+        return { ...author, bookCount };
+      });
     },
   },
+  Mutation: {
+    addBook: (root, args) => {
+      const book = { ...args, id: uuid() };
+      books = books.concat(book);
+      if(authors.filter(a=>a.name===args.author).length===0){
+          authors.push({
+              name:args.author,
+              id:uuid()
+          })
+      }
+      return book;
+    },
+    editAuthor:(root,args)=>{
+        const index=authors.findIndex(a=>a.name===args.name);
+        console.log(args);
+        if(authors[index]){
+            authors[index].born=args.born;
+        }
+        return authors[index];
+    }
+  },
 };
-
 const server = new ApolloServer({
   typeDefs,
   resolvers,
