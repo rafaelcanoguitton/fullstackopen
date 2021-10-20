@@ -154,7 +154,6 @@ const resolvers = {
     },
     editAuthor:(root,args)=>{
         const index=authors.findIndex(a=>a.name===args.name);
-        console.log(args);
         if(authors[index]){
             authors[index].born=args.born;
         }
