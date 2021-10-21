@@ -1,5 +1,6 @@
 import React from "react";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery,useMutation, gql } from "@apollo/client";
+import BirthForm from "./setBirthyear";
 const Authors = (props) => {
   const ALL_AUTHORS = gql`
     query {
@@ -12,13 +13,23 @@ const Authors = (props) => {
     }
   `;
   const authors = useQuery(ALL_AUTHORS);
+  const EDIT_AUTHOR = gql`
+    mutation editAuthor($name: String!, $born: Int!) {
+      editAuthor(name: $name, born: $born) {
+        name
+        born
+      }
+    }
+  `;
+  const [setBirthYearMutation] = useMutation(EDIT_AUTHOR, {
+    refetchQueries: [{ query: ALL_AUTHORS }],
+  });
   if (!props.show) {
     return null;
   }
   if (authors.loading) {
     return <div>loading...</div>;
   } else {
-    console.log(authors);
     return (
       <div>
         <h2>authors</h2>
@@ -38,6 +49,7 @@ const Authors = (props) => {
             ))}
           </tbody>
         </table>
+        <BirthForm setBirthYearMutation={setBirthYearMutation} />
       </div>
     );
   }
