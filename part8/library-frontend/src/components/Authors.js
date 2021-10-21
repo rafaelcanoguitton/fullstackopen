@@ -49,7 +49,7 @@ const Authors = (props) => {
             ))}
           </tbody>
         </table>
-        <BirthForm setBirthYearMutation={setBirthYearMutation} />
+        <BirthForm setBirthYearMutation={setBirthYearMutation} authors={authors}/>
       </div>
     );
   }

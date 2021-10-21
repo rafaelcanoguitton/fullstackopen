@@ -12,10 +12,18 @@ const BirthForm = (props) => {
   };
   return (
     <form onSubmit={submit}>
-      <div>
+      {/* <div>
         <label>name</label>
         <input value={name} onChange={({ target }) => setName(target.value)} />
-      </div>
+      </div> */}
+      <select value={name} onChange={({ target }) => setName(target.value)}>
+        <option value="">Select an author</option>
+        {props.authors.data.allAuthors.map((author) => (
+          <option key={author.name} value={author.name}>
+            {author.name}
+          </option>
+        ))}
+      </select>
       <div>
         <label>birth year</label>
         <input
