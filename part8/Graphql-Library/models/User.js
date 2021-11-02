@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const schema = new mongoose.Schema({
   name: {
     type: String,
@@ -7,9 +6,5 @@ const schema = new mongoose.Schema({
     unique: true,
     minlength: 4,
   },
-  born: {
-    type: Number,
-  },
 });
-
-module.exports = mongoose.model("Author", schema);
+module.exports = mongoose.model("User", schema);
