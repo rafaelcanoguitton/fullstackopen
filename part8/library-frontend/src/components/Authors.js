@@ -1,5 +1,5 @@
 import React from "react";
-import { useQuery,useMutation, gql } from "@apollo/client";
+import { useQuery, useMutation, gql } from "@apollo/client";
 import BirthForm from "./setBirthyear";
 const Authors = (props) => {
   const ALL_AUTHORS = gql`
@@ -49,7 +49,12 @@ const Authors = (props) => {
             ))}
           </tbody>
         </table>
-        <BirthForm setBirthYearMutation={setBirthYearMutation} authors={authors}/>
+        {props.token ? (
+          <BirthForm
+            setBirthYearMutation={setBirthYearMutation}
+            authors={authors}
+          />
+        ) : null}
       </div>
     );
   }

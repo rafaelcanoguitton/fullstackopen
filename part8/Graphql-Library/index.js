@@ -1,4 +1,4 @@
-const { ApolloServer, gql } = require("apollo-server");
+const { ApolloServer, gql ,UserInputError} = require("apollo-server");
 const { v1: uuid } = require("uuid");
 const Book = require("./models/Book");
 const Author = require("./models/Author");
@@ -64,18 +64,19 @@ const resolvers = {
     bookCount: () => Book.collection.countDocuments(),
     allBooks: async (root, args) => {
       if (args.author) {
-        let booksToReturn = await Book.find({ author: args.author });
+        const booksToReturn = await Book.find({ author: args.author });
         return booksToReturn;
       }
       if (args.genre) {
-        let booksToReturn = await Book.find({ genres: { $in: [args.genre] } });
+        const booksToReturn = await Book.find({ genres: { $in: [args.genre] } });
         return booksToReturn;
       }
-      let booksToReturn = await Book.find({});
+      const booksToReturn = await Book.find({});
       return booksToReturn;
     },
-    allAuthors: () => {
-      return Author.find({});
+    allAuthors: async () => {
+      const authorsToReturn = await Author.find({});
+      return authorsToReturn;
     },
     me: (root, args, context) => {
       return context.currentUser;

@@ -7,6 +7,17 @@ const NewBook = (props) => {
   const [genre, setGenre] = useState("");
   const [genres, setGenres] = useState([]);
   const [errorMessage, setErrorMessage] = useState(null);
+  const ALL_BOOKS = gql`
+    query {
+      allBooks {
+        title
+        published
+        author {
+          name
+        }
+      }
+    }
+  `;
   const ADD_BOOK = gql`
     mutation createBook(
       $title: String!
@@ -27,15 +38,24 @@ const NewBook = (props) => {
       }
     }
   `;
-  const [addBook] = useMutation(ADD_BOOK);
+  const [addBook] = useMutation(ADD_BOOK, {
+    onError: (error) => {
+      setErrorMessage(error.graphQLErrors[0].message);
+    },
+    update: (store, response) => {
+      const data = store.readQuery({ query: ALL_BOOKS });
+      store.writeQuery({
+        query: ALL_BOOKS,
+        data: { ...data, allBooks: [...data.allBooks, response.data.addBook] },
+      });
+    },
+  });
   if (!props.show) {
     return null;
   }
 
   const submit = async (event) => {
     event.preventDefault();
-
-    console.log("add book...");
     addBook({
       variables: { title, author, published: parseInt(published), genres },
     });
