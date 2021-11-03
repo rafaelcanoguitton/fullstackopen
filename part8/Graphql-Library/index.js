@@ -1,4 +1,4 @@
-const { ApolloServer, gql ,UserInputError} = require("apollo-server");
+const { ApolloServer, gql, UserInputError } = require("apollo-server");
 const { v1: uuid } = require("uuid");
 const Book = require("./models/Book");
 const Author = require("./models/Author");
@@ -7,6 +7,8 @@ const mongoose = require("mongoose");
 const MONGODB_URI = "mongodb://127.0.0.1:27017/library";
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = "mysecretsshhh";
+const { PubSub } = require("apollo-server");
+const pubsub = new PubSub();
 mongoose
   .connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -56,6 +58,9 @@ const typeDefs = gql`
     createUser(username: String!, favoriteGenre: String!): User
     login(username: String!, password: String!): Token
   }
+  type Subscription {
+    bookAdded: Book!
+  }
 `;
 
 const resolvers = {
@@ -68,7 +73,9 @@ const resolvers = {
         return booksToReturn;
       }
       if (args.genre) {
-        const booksToReturn = await Book.find({ genres: { $in: [args.genre] } });
+        const booksToReturn = await Book.find({
+          genres: { $in: [args.genre] },
+        });
         return booksToReturn;
       }
       const booksToReturn = await Book.find({});
@@ -115,6 +122,7 @@ const resolvers = {
           author.save();
           book.author = author;
         }
+        pubsub.publish("BOOK_ADDED", { bookAdded: book });
         return book.save();
       }
     },
@@ -151,6 +159,11 @@ const resolvers = {
         id: user._id,
       };
       return { value: jwt.sign(userForToken, JWT_SECRET) };
+    },
+  },
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator(["BOOK_ADDED"]),
     },
   },
 };
