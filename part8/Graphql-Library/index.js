@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const MONGODB_URI = "mongodb://127.0.0.1:27017/library";
 const jwt = require("jsonwebtoken");
 const JWT_SECRET = "mysecretsshhh";
-const { PubSub } = require("apollo-server");
+const { PubSub } = require("graphql-subscriptions");
 const pubsub = new PubSub();
 mongoose
   .connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -82,7 +82,7 @@ const resolvers = {
       return booksToReturn;
     },
     allAuthors: async () => {
-      const authorsToReturn = await Author.find({});
+      const authorsToReturn = await Author.find({}).populate("books");
       return authorsToReturn;
     },
     me: (root, args, context) => {
