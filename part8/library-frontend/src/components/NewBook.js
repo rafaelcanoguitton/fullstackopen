@@ -43,11 +43,7 @@ const NewBook = (props) => {
       setErrorMessage(error.graphQLErrors[0].message);
     },
     update: (store, response) => {
-      const data = store.readQuery({ query: ALL_BOOKS });
-      store.writeQuery({
-        query: ALL_BOOKS,
-        data: { ...data, allBooks: [...data.allBooks, response.data.addBook] },
-      });
+      props.updateCacheWith(response.data.addBook);
     },
   });
   if (!props.show) {

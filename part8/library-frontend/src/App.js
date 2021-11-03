@@ -1,4 +1,8 @@
-import { ApolloProvider } from "@apollo/client";
+import {
+  ApolloProvider,
+  useApolloClient,
+  useSubscription,
+} from "@apollo/client";
 import React, { useState } from "react";
 import Authors from "./components/Authors";
 import Books from "./components/Books";
@@ -9,6 +13,25 @@ const App = () => {
   const [page, setPage] = useState("authors");
   const [token, setToken] = useState(null);
   const [books, setBooks] = useState([]);
+  const client = useApolloClient();
+  const updateCacheWith = (addedBook) => {
+    const includedIn = (set, object) =>
+      set.map((p) => p.id).includes(object.id);
+    const dataInStore = client.readQuery({ query: ALL_BOOKS });
+    if (!includedIn(dataInStore.allBooks, addedBook)) {
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: { allBooks: dataInStore.allBooks.concat(addedBook) },
+      });
+    }
+  };
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      const addedBook = subscriptionData.data.bookAdded;
+      window.alert(`${addedBook.title} added`);
+      updateCacheWith(addedBook);
+    },
+  });
   return (
     <ApolloProvider>
       <div>
@@ -27,7 +50,7 @@ const App = () => {
 
         <Books show={page === "books"} setBooks={setBooks} />
 
-        <NewBook show={page === "add"} />
+        <NewBook show={page === "add"} updateCacheWith={updateCacheWith}/>
         <Recommendations
           show={page === "recommend"}
           books={books}
