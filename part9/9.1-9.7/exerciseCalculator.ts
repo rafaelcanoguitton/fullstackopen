@@ -7,6 +7,32 @@ interface Result {
     target: number;
     average: number;
 }
+interface Exercise {
+    dailyExercises: Array<number>;
+    target: number;
+}
+const parseArguments2 = (args: Array<string>): Exercise => {
+    if (args.length < 4) throw new Error("Not enough arguments");
+    const exercise: Exercise = {
+        dailyExercises: [],
+        target: 0
+    };
+    if(!isNaN(Number(args[2]))){
+        exercise.target=Number(args[2]);
+    } else{
+        throw new Error("Provided values were not numbers!");
+    }
+    for (let i = 3; i < args.length; i++) {
+        if (!isNaN(Number(args[i]))) {
+            exercise.dailyExercises.push(Number(args[i]));
+        } else {
+            throw new Error("Provided values were not numbers!");
+        }
+    }
+    
+    return exercise;
+};
+
 const calculateExercises = (dailyExercises: Array<number>, target: number): Result => {
     const rating = Math.round(dailyExercises.reduce((acc, curr) => acc + curr) / dailyExercises.length);
     const ratingDescription = rating > target ? "good" : rating < target ? "bad" : "not too bad but could be better";
@@ -21,4 +47,9 @@ const calculateExercises = (dailyExercises: Array<number>, target: number): Resu
     }
     return result;
 }
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+try{
+    const {dailyExercises,target}=parseArguments2(process.argv);
+    console.log(calculateExercises(dailyExercises,target));
+} catch(e){
+    console.log("Something went wrong: ",e.message);
+}
