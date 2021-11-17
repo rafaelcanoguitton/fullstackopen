@@ -33,3 +33,4 @@ try {
 } catch (e) {
   console.log("Error, something went wrong, message: ", e.message);
 }
+export default calculateBmi;
