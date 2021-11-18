@@ -69,3 +69,4 @@ try {
   const error = e as Error;
   console.log("Something went wrong: ", error.message);
 }
+export default calculateExercises;

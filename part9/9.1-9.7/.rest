@@ -1,0 +1,9 @@
+##testing the exercises route
+POST http://localhost:3002/calculate
+Content-Type: application/json
+
+{
+    "daily_exercises":"[2 ,1 ,0, 2, 0, 3, 1, 0]",
+    "target": 4
+}
+
