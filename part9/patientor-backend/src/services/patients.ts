@@ -1,4 +1,4 @@
-import patientData from "../data/patients.json";
+import patientData from "../data/patients";
 import { NonSensitivePatients, Patient, newPatientEntry } from "../types";
 import { v4 as uuidv4 } from "uuid";
 const patients: Patient[] = patientData as Array<Patient>;
