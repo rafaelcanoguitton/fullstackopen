@@ -1,13 +1,13 @@
 import React from "react";
 import { useParams } from "react-router";
-import { Icon } from "semantic-ui-react";
+import { Card, Icon } from "semantic-ui-react";
 import { useStateValue } from "../state";
 import { Diagnosis, Patient } from "../types";
 import { Entry } from "../types";
 import { apiBaseUrl } from "../constants";
 import axios from "axios";
 const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
-  const [ diagnoses , setDiagnoses] = React.useState<Diagnosis[]>([]);
+  const [diagnoses, setDiagnoses] = React.useState<Diagnosis[]>([]);
   React.useEffect(() => {
     const fetchDiagnosis = async () => {
       try {
@@ -21,24 +21,72 @@ const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
     };
     void fetchDiagnosis();
   }, []);
-  return (
-    <div>
-      <div>
-        <span>
-          {entry.date} {entry.description}
-        </span>
-      </div>
-      <div>
-        <ul>
-          {entry.diagnosisCodes?.map((code) => (
-            <li key={code}>
-              {code} {diagnoses}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
+  switch (entry.type) {
+    case "Hospital":
+      return (
+        <Card>
+          <Card.Content>
+            <Card.Header>
+              {entry.date}
+              <Icon name={"user md"} />{" "}
+            </Card.Header>
+            <Card.Meta>{entry.description}</Card.Meta>
+            <Card.Description>{entry.specialist}</Card.Description>
+            <ul>
+              {entry.diagnosisCodes?.map((code) => (
+                <li key={code}>
+                  {code} {diagnoses}
+                </li>
+              ))}
+            </ul>
+          </Card.Content>
+        </Card>
+      );
+    case "HealthCheck":
+      return (
+        <Card>
+          <Card.Content>
+            <Card.Header>
+              {entry.date}
+              <Icon name={"medkit"} />{" "}
+            </Card.Header>
+            <Card.Meta>{entry.description}</Card.Meta>
+            <Card.Description>{entry.specialist}</Card.Description>
+            <ul>
+              {entry.diagnosisCodes?.map((code) => (
+                <li key={code}>
+                  {code} {diagnoses}
+                </li>
+              ))}
+            </ul>
+            <Icon
+              name={"heart"}
+              color={entry.healthCheckRating > 1 ? "black" : "red"}
+            />
+          </Card.Content>
+        </Card>
+      );
+    case "OccupationalHealthcare":
+      return (
+        <Card>
+          <Card.Content>
+            <Card.Header>
+              {entry.date}
+              <Icon name={"user md"} />{" "}
+            </Card.Header>
+            <Card.Meta>{entry.description}</Card.Meta>
+            <Card.Description>{entry.specialist}</Card.Description>
+            <ul>
+              {entry.diagnosisCodes?.map((code) => (
+                <li key={code}>
+                  {code} {diagnoses}
+                </li>
+              ))}
+            </ul>
+          </Card.Content>
+        </Card>
+      );
+  }
 };
 const PatientPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -53,9 +101,11 @@ const PatientPage = () => {
       <p>ssn: {patient.ssn}</p>
       <p>occupation: {patient.occupation}</p>
       <h2>entries</h2>
-      {patient.entries?.map((entry, idx) => (
-        <EntryDetails key={idx} entry={entry} />
-      ))}
+      <Card.Group>
+        {patient.entries?.map((entry, idx) => (
+          <EntryDetails key={idx} entry={entry} />
+        ))}
+      </Card.Group>
     </>
   );
 };

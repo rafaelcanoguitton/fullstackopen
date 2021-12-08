@@ -26,7 +26,7 @@ const App = () => {
     };
     void fetchPatientList();
   }, [dispatch]);
-
+  
   return (
     <div className="App">
       <Router>
