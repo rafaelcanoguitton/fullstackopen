@@ -1,10 +1,11 @@
-import { newPatientEntry, Gender } from "./types";
+import { newPatientEntry, Gender, Entry } from "./types";
 type Fields = {
   name: unknown;
   dateOfBirth: unknown;
   ssn: unknown;
   gender: unknown;
   occupation: unknown;
+  entries: unknown;
 };
 const isString = (text: unknown): text is string => {
   return typeof text === "string" || text instanceof String;
@@ -15,6 +16,12 @@ const isDate = (date: string): boolean => {
 const isGender = (param: any): param is Gender => {
   return Object.values(Gender).includes(param);
 };
+const isEntries = (param: any):param is Entry[] =>{
+  if(param as Entry[]){
+    return true;
+  }
+  return false;
+}
 const parseString = (string: unknown): string => {
   if (!string || !isString(string)) {
     throw new Error(string + "is not valid");
@@ -33,12 +40,19 @@ const parseGender = (gender: unknown): Gender => {
   }
   return gender;
 };
+const parseEntries = (entries: unknown): Entry[] =>{
+  if(!entries||!isEntries(entries)){
+    throw new Error("Incorrect entry");
+  }
+  return entries;
+}
 const toNewPatient = ({
   name,
   dateOfBirth,
   ssn,
   gender,
   occupation,
+  entries,
 }: Fields): newPatientEntry => {
   const newPatient: newPatientEntry = {
     name: parseString(name),
@@ -46,6 +60,7 @@ const toNewPatient = ({
     ssn: parseString(ssn),
     gender: parseGender(gender),
     occupation: parseString(occupation),
+    entries: parseEntries(entries),
   };
   return newPatient;
 };
