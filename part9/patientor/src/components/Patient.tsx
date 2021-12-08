@@ -2,10 +2,25 @@ import React from "react";
 import { useParams } from "react-router";
 import { Icon } from "semantic-ui-react";
 import { useStateValue } from "../state";
-import { Patient } from "../types";
+import { Diagnosis, Patient } from "../types";
 import { Entry } from "../types";
+import { apiBaseUrl } from "../constants";
+import axios from "axios";
 const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
-  console.log("wadafa");
+  const [ diagnoses , setDiagnoses] = React.useState<Diagnosis[]>([]);
+  React.useEffect(() => {
+    const fetchDiagnosis = async () => {
+      try {
+        const { data: diagnosis } = await axios.get<Diagnosis[]>(
+          `${apiBaseUrl}/diagnosis`
+        );
+        setDiagnoses(diagnosis);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    void fetchDiagnosis();
+  }, []);
   return (
     <div>
       <div>
@@ -16,7 +31,9 @@ const EntryDetails: React.FC<{ entry: Entry }> = ({ entry }) => {
       <div>
         <ul>
           {entry.diagnosisCodes?.map((code) => (
-            <li key={code}>{code}</li>
+            <li key={code}>
+              {code} {diagnoses}
+            </li>
           ))}
         </ul>
       </div>
@@ -36,7 +53,7 @@ const PatientPage = () => {
       <p>ssn: {patient.ssn}</p>
       <p>occupation: {patient.occupation}</p>
       <h2>entries</h2>
-      {patient.entries?.map((entry,idx) => (
+      {patient.entries?.map((entry, idx) => (
         <EntryDetails key={idx} entry={entry} />
       ))}
     </>
