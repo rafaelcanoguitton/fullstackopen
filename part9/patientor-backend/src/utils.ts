@@ -17,26 +17,26 @@ type Fields = {
   occupation: unknown;
   entries: unknown;
 };
-type EntryFields = {
-  description: unknown;
-  date: unknown;
-  specialist: unknown;
-  diagnosisCodes: unknown;
-  discharge?: unknown;
-  employername?: unknown;
-  sickLeave?: unknown;
-  type: unknown;
-  healthCheckRating: unknown;
-};
+// type EntryFields = {
+//   description: unknown;
+//   date: unknown;
+//   specialist: unknown;
+//   diagnosisCodes: unknown;
+//   discharge?: unknown;
+//   employername?: unknown;
+//   sickLeave?: unknown;
+//   type: unknown;
+//   healthCheckRating: unknown;
+// };
 const isString = (text: unknown): text is string => {
   return typeof text === "string" || text instanceof String;
 };
-const isStringArray = (param: unknown): param is string[] => {
-  if (!Array.isArray(param)) {
-    return false;
-  }
-  return param.every((st) => isString(st));
-};
+// const isStringArray = (param: unknown): param is string[] => {
+//   if (!Array.isArray(param)) {
+//     return false;
+//   }
+//   return param.every((st) => isString(st));
+//};
 const isDate = (date: string): boolean => {
   return Boolean(Date.parse(date));
 };
@@ -78,6 +78,7 @@ const isHospitalEntry = (entry: any): entry is HospitalEntry => {
   return true;
 };
 const isHealthCheckEntry = (entry: any): entry is HealthCheckEntry => {
+  console.log(isNumber(entry.healthCheckRating));
   if (entry.type !== "HealthCheck") {
     return false;
   }
@@ -170,7 +171,7 @@ export const toNewEntry = (entry: any): newEntry => {
   } else if (isHealthCheckEntry(entry)) {
     return entry;
   } else {
-    throw new Error(`Not an entry from the above types.`);
+    throw new Error(`Not an entry from the defined types.`);
   }
 };
 
