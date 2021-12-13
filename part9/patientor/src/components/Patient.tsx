@@ -103,6 +103,7 @@ const PatientPage = () => {
     setModalOpen(false);
     setError(undefined);
   };
+  
   const submitNewEntry = async (values: EntryNoId) => {
     try {
       if (values.type === "HealthCheck") {

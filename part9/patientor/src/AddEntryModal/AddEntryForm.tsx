@@ -1,9 +1,10 @@
 import React from "react";
-import { Grid, Button} from "semantic-ui-react";
-import { Field, Formik,Form } from "formik";
+import { Grid, Button } from "semantic-ui-react";
+import { Field, Formik, Form } from "formik";
 import { HealthCheckRating, Entry } from "../types";
-import { TextField } from "../AddPatientModal/FormField";
-import {SelectField,HealthCheckOptions} from "./FormField";
+import { DiagnosisSelection, TextField } from "../AddPatientModal/FormField";
+import { SelectField, HealthCheckOptions } from "./FormField";
+import { useStateValue } from "../state";
 //Union omit
 type UnionOmit<T, K extends string | number | symbol> = T extends unknown
   ? Omit<T, K>
@@ -15,7 +16,11 @@ interface Props {
   onCancel: () => void;
 }
 
-export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
+export const AddEntryForm = ({
+  onSubmit,
+  onCancel,
+}: Props) => {
+  const [{ diagnoses }] = useStateValue();
   return (
     <Formik
       initialValues={{
@@ -47,7 +52,7 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
         return errors;
       }}
     >
-      {({ isValid, dirty }) => {
+      {({ isValid, dirty,setFieldValue,setFieldTouched }) => {
         return (
           <Form className="form ui">
             <Field
@@ -67,6 +72,11 @@ export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
               placeholder="Specialist"
               name="specialist"
               component={TextField}
+            />
+            <DiagnosisSelection
+              setFieldValue={setFieldValue}
+              setFieldTouched={setFieldTouched}
+              diagnoses={Object.values(diagnoses)}
             />
             <SelectField
               label="HealthCheckRating"

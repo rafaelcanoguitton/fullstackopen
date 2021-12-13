@@ -22,7 +22,6 @@ export const SelectField = ({ label, name, options }: SelectFieldProps) => (
     <label>{label}</label>
     <Field as="select" name={name} className="ui dropdown">
       {options.map((option) => {
-        
         return (
           <option key={option.value} value={option.value}>
             {option.label || option.value}
