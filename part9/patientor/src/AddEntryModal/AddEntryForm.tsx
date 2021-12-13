@@ -3,7 +3,12 @@ import { Grid, Button } from "semantic-ui-react";
 import { Field, Formik, Form } from "formik";
 import { HealthCheckRating, Entry } from "../types";
 import { DiagnosisSelection, TextField } from "../AddPatientModal/FormField";
-import { SelectField, HealthCheckOptions } from "./FormField";
+import {
+  SelectField,
+  HealthCheckOptions,
+  SelectFieldType,
+  TypeOptions,
+} from "./FormField";
 import { useStateValue } from "../state";
 //Union omit
 type UnionOmit<T, K extends string | number | symbol> = T extends unknown
@@ -16,11 +21,9 @@ interface Props {
   onCancel: () => void;
 }
 
-export const AddEntryForm = ({
-  onSubmit,
-  onCancel,
-}: Props) => {
+export const AddEntryForm = ({ onSubmit, onCancel }: Props) => {
   const [{ diagnoses }] = useStateValue();
+  const [type, setType] = React.useState<string>("HealthCheck");
   return (
     <Formik
       initialValues={{
@@ -52,9 +55,15 @@ export const AddEntryForm = ({
         return errors;
       }}
     >
-      {({ isValid, dirty,setFieldValue,setFieldTouched }) => {
+      {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
         return (
           <Form className="form ui">
+            <SelectFieldType
+              name="type"
+              label="Type"
+              options={TypeOptions}
+              setEntryType={setType}
+            />
             <Field
               label="Description"
               placeholder="Description"
@@ -78,11 +87,27 @@ export const AddEntryForm = ({
               setFieldTouched={setFieldTouched}
               diagnoses={Object.values(diagnoses)}
             />
-            <SelectField
-              label="HealthCheckRating"
-              name="healthCheckRating"
-              options={HealthCheckOptions}
-            />
+            {type === "HealthCheck" ? (
+              <SelectField
+                label="HealthCheckRating"
+                name="healthCheckRating"
+                options={HealthCheckOptions}
+              />
+            ) : type === "OccupationalHealthcare" ? (
+              <Field
+                label="EmployerName"
+                placeholder="EmployerName"
+                name="employerName"
+                component={TextField}
+              />
+            ) : type === "Hospital" ? (
+              <Field
+                label="Discharge"
+                placeholder="Discharge"
+                name="discharge"
+                component={TextField}
+              />
+            ) : null}
             <Grid>
               <Grid.Column floated="left" width={5}>
                 <Button type="button" onClick={onCancel} color="red">
